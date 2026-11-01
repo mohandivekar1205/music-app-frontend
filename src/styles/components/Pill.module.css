@@ -1,0 +1,24 @@
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  background-color: var(--pill-bg-inactive);
+  color: var(--pill-text-inactive);
+  border: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.pill:hover {
+  background-color: var(--pill-hover);
+}
+
+.pill.active {
+  background-color: var(--pill-bg-active);
+  color: var(--pill-text-active);
+}

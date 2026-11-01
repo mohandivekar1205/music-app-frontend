@@ -1,0 +1,619 @@
+.explore {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+  user-select: none;
+}
+
+/* Header & Filter Controls */
+.headerOverlay {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+  right: 24px;
+  z-index: 50;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.headerGlass {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 8px 18px;
+  border-radius: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.titleArea {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.titleArea h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.filterPills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.filterPills::-webkit-scrollbar {
+  display: none;
+}
+
+.filterPill {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.filterPill:hover {
+  background: var(--pill-hover);
+}
+
+.filterPill.active {
+  background: var(--text-primary);
+  color: var(--text-inverse);
+}
+
+.controlsGlass {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 6px 14px;
+  border-radius: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.controlBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.controlBtn:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.controlBtn.active {
+  background: var(--text-primary);
+  color: var(--text-inverse);
+}
+
+.hintBadge {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 6px;
+}
+
+/* Canvas Mode */
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: grab;
+}
+
+.canvas:active {
+  cursor: grabbing;
+}
+
+.cardWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+  pointer-events: auto;
+}
+
+/* Scrollable Mosaic Grid Mode */
+.scrollableGridContainer {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 90px 24px 80px 24px;
+  box-sizing: border-box;
+}
+
+.mosaicGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-auto-rows: 200px;
+  grid-auto-flow: dense;
+  gap: 20px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.gridItem {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.span2x2 {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.span2x1 {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.span1x2 {
+  grid-column: span 1;
+  grid-row: span 2;
+}
+
+.span1x1 {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+@media (max-width: 768px) {
+  .span2x2, .span2x1 {
+    grid-column: span 1;
+  }
+}
+
+/* Base Mosaic Card Styles */
+.mosaicCard {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  background-color: var(--bg-tertiary);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.25s ease, opacity 0.25s ease;
+}
+
+.mosaicCard:hover {
+  transform: translateY(-4px) scale(1.015);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
+  z-index: 10;
+}
+
+.dimmed {
+  opacity: 0.25;
+  filter: grayscale(40%);
+}
+
+.cardImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  pointer-events: none;
+}
+
+.mosaicCard:hover .cardImage {
+  transform: scale(1.06);
+}
+
+.cardOverlayGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.85) 100%);
+  pointer-events: none;
+}
+
+.cardTopBadge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.pillBadge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.statsBadge {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(0, 0, 0, 0.35);
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+/* Center Play Overlay */
+.centerPlayOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  transform: scale(0.9);
+  z-index: 3;
+}
+
+.mosaicCard:hover .centerPlayOverlay {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.largePlayBtn, .mediumPlayBtn, .smallPlayBtn {
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  color: #1A1A1A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.largePlayBtn {
+  width: 58px;
+  height: 58px;
+}
+
+.mediumPlayBtn {
+  width: 48px;
+  height: 48px;
+}
+
+.smallPlayBtn {
+  width: 40px;
+  height: 40px;
+}
+
+.largePlayBtn:hover, .mediumPlayBtn:hover, .smallPlayBtn:hover {
+  transform: scale(1.12);
+  background-color: var(--brand-primary);
+  color: #FFFFFF;
+}
+
+/* Card Bottom Content */
+.cardBottomContent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 18px;
+  z-index: 2;
+  color: #FFFFFF;
+  pointer-events: none;
+}
+
+.featuredTitle {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  line-height: 1.25;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.featuredSubtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 12px 0;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.cardActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.actionBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  transition: background 0.2s ease;
+}
+
+.actionBtn:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* Artist Card Specifics (1x2) */
+.artistCard {
+  background-color: #202124;
+}
+
+.artistGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.92) 100%);
+  pointer-events: none;
+}
+
+.artistName {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  line-height: 1.2;
+}
+
+.artistStats {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 12px 0;
+}
+
+.artistPillBtn {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 16px;
+  background: #FFFFFF;
+  color: #1A1A1A;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Banner Card Specifics (2x1) */
+.bannerCard {
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid var(--border-light);
+}
+
+.bannerThumbWrapper {
+  position: relative;
+  width: 170px;
+  height: 100%;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.bannerThumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.bannerCard:hover .bannerThumb {
+  transform: scale(1.06);
+}
+
+.bannerPlayOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.bannerCard:hover .bannerPlayOverlay {
+  opacity: 1;
+}
+
+.bannerDetails {
+  flex: 1;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.bannerBadge {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--brand-primary);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.bannerTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bannerSubtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0 0 12px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bannerWaveform {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 20px;
+}
+
+.waveBar {
+  width: 3px;
+  background: var(--text-primary);
+  border-radius: 2px;
+}
+
+.waveDuration {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-left: 8px;
+}
+
+/* Podcast Card Specifics (1x2) */
+.podcastCard {
+  background-color: #1a1a2e;
+}
+
+.podcastGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 40%, rgba(15, 15, 35, 0.95) 100%);
+  pointer-events: none;
+}
+
+.podcastBadge {
+  background: rgba(26, 115, 232, 0.5);
+}
+
+.podcastHost {
+  font-size: 11px;
+  font-weight: 600;
+  color: #8ab4f8;
+  display: block;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.podcastTitle {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.podcastStats {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+}
+
+/* Standard Card (1x1) */
+.standardCard {
+  background: var(--bg-tertiary);
+}
+
+.standardGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.85) 100%);
+  pointer-events: none;
+}
+
+.standardTag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.5);
+  color: #FFFFFF;
+  backdrop-filter: blur(4px);
+  z-index: 2;
+}
+
+.standardTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0 0 3px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+
+.standardSubtitle {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}

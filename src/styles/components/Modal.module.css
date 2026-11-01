@@ -1,0 +1,117 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: var(--bg-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.surface {
+  background-color: var(--bg-elevated);
+  width: 480px;
+  max-width: 90vw;
+  border-radius: 8px;
+  box-shadow: var(--shadow-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.header {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.inputField {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-medium);
+  padding: 8px 0;
+  font-size: 14px;
+  color: var(--text-primary);
+  transition: border-bottom-color 0.2s;
+}
+
+.inputField:focus {
+  outline: none;
+  border-bottom: 2px solid var(--text-primary);
+}
+
+.inputField::placeholder {
+  color: var(--text-tertiary);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.toggleSwitch {
+  appearance: none;
+  width: 36px;
+  height: 20px;
+  background-color: var(--text-tertiary);
+  border-radius: 20px;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.2s;
+}
+
+.toggleSwitch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+}
+
+.toggleSwitch:checked {
+  background-color: var(--accent-blue);
+}
+
+.toggleSwitch:checked::after {
+  transform: translateX(16px);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.cancelBtn {
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+}
+
+.createBtn {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 24px;
+  border-radius: 24px;
+}
